@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 
 import connectDB from "./src/config/db.js";
 import { notFound, errorHandler } from "./src/middleware/errorHandler.js";
+import authRoutes from "./src/routes/authRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -25,6 +26,8 @@ if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
 });
+
+app.use("/api/auth", authRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
