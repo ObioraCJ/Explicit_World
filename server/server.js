@@ -1,5 +1,5 @@
+import "dotenv/config";
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -10,8 +10,8 @@ import { Server } from "socket.io";
 import connectDB from "./src/config/db.js";
 import { notFound, errorHandler } from "./src/middleware/errorHandler.js";
 import authRoutes from "./src/routes/authRoutes.js";
+import productRoutes from "./src/routes/productRoutes.js";
 
-dotenv.config();
 connectDB();
 
 const app = express();
@@ -28,6 +28,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

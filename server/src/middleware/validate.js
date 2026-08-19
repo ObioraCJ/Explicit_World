@@ -35,3 +35,25 @@ export const resetPasswordValidation = [
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long"),
 ];
+export const createProductValidation = [
+  body("name").trim().notEmpty().withMessage("Product name is required"),
+  body("description").trim().notEmpty().withMessage("Description is required"),
+  body("category")
+    .isIn([
+      "shirts",
+      "trousers",
+      "suits",
+      "dresses",
+      "traditional-wear",
+      "accessories",
+      "other",
+    ])
+    .withMessage("Invalid category"),
+  body("price").isFloat({ min: 0 }).withMessage("Price must be a positive number"),
+  body("stock").isInt({ min: 0 }).withMessage("Stock must be a non-negative whole number"),
+];
+
+export const reviewValidation = [
+  body("rating").isInt({ min: 1, max: 5 }).withMessage("Rating must be between 1 and 5"),
+  body("comment").optional().trim(),
+];
