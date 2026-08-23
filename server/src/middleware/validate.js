@@ -35,6 +35,7 @@ export const resetPasswordValidation = [
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long"),
 ];
+
 export const createProductValidation = [
   body("name").trim().notEmpty().withMessage("Product name is required"),
   body("description").trim().notEmpty().withMessage("Description is required"),
@@ -56,4 +57,39 @@ export const createProductValidation = [
 export const reviewValidation = [
   body("rating").isInt({ min: 1, max: 5 }).withMessage("Rating must be between 1 and 5"),
   body("comment").optional().trim(),
+];
+
+export const createCustomOrderValidation = [
+  body("fabricChoice").trim().notEmpty().withMessage("Fabric choice is required"),
+  body("price").isFloat({ min: 0 }).withMessage("Price must be a positive number"),
+  body("measurements")
+    .notEmpty()
+    .withMessage("Measurements are required")
+    .custom((value) => {
+      try {
+        const parsed = JSON.parse(value);
+        if (!parsed.chest || !parsed.waist) {
+          throw new Error();
+        }
+        return true;
+      } catch {
+        throw new Error("Measurements must include at least chest and waist");
+      }
+    }),
+];
+
+export const updateOrderStatusValidation = [
+  body("status")
+    .optional()
+    .isIn([
+      "pending",
+      "confirmed",
+      "cutting",
+      "stitching",
+      "fitting",
+      "ready",
+      "delivered",
+      "cancelled",
+    ])
+    .withMessage("Invalid status value"),
 ];
