@@ -15,7 +15,7 @@ function AuthLayout({ eyebrow, title, subtitle, children }) {
         {/* Monogram badge */}
         <div className="relative flex items-center gap-3">
           <div className="w-11 h-11 rounded-full border border-gold flex items-center justify-center">
-            <span className="font-display text-gold text-sm tracking-wide">F&T</span>
+            <span className="font-display text-gold text-sm tracking-wide">E_W</span>
           </div>
           <span className="font-display text-lg tracking-wide">Explicit World</span>
         </div>
