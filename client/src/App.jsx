@@ -12,6 +12,10 @@ import CheckoutPage from "./pages/CheckoutPage";
 import PaymentCallbackPage from "./pages/PaymentCallbackPage";
 import OrdersPage from "./pages/OrdersPage";
 import CustomOrderPage from "./pages/CustomOrderPage";
+import AdminRoute from "./routes/AdminRoute";
+import AdminLayout from "./pages/Admin/AdminLayout";
+import AdminDashboardPage from "./pages/Admin/AdminDashboardPage";
+import AdminProductsPage from "./pages/Admin/AdminProductsPage";
 
 function Home() {
   return (
@@ -50,6 +54,18 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminLayout />
+              </AdminRoute>
+            }
+          >
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="products" element={<AdminProductsPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

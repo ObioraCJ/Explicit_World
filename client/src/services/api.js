@@ -4,10 +4,9 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api"
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, // sends the refreshToken httpOnly cookie automatically
+  withCredentials: true,
 });
 
-// Attach the access token to every outgoing request, if we have one
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
@@ -16,8 +15,18 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// If a request fails with 401 (expired access token), try to silently refresh
-// it once, then retry the original request - only logs the user out if that fails too
+// Endpoints that legitimately return their own error codes (e.g. wrong password)
+// and should never trigger the "session expired, try to refresh" logic below
+const AUTH_ENDPOINTS = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/refresh",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+];
+
+const isAuthEndpoint = (url = "") => AUTH_ENDPOINTS.some((endpoint) => url.includes(endpoint));
+
 let isRefreshing = false;
 let refreshQueue = [];
 
@@ -34,9 +43,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isAuthEndpoint(originalRequest.url)
+    ) {
       if (isRefreshing) {
-        // If a refresh is already in progress, queue this request until it finishes
         return new Promise((resolve, reject) => {
           refreshQueue.push({ resolve, reject });
         }).then((token) => {
