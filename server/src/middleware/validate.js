@@ -61,7 +61,6 @@ export const reviewValidation = [
 
 export const createCustomOrderValidation = [
   body("fabricChoice").trim().notEmpty().withMessage("Fabric choice is required"),
-  body("price").isFloat({ min: 0 }).withMessage("Price must be a positive number"),
   body("measurements")
     .notEmpty()
     .withMessage("Measurements are required")

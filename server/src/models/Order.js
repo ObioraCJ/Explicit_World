@@ -7,9 +7,9 @@ const orderItemSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
-    name: { type: String, required: true },
-    image: { type: String, required: true },
-    price: { type: Number, required: true },
+    name: { type: String, required: true }, // snapshot at time of purchase
+    image: { type: String, required: true }, // snapshot at time of purchase
+    price: { type: Number, required: true }, // snapshot at time of purchase
     quantity: { type: Number, required: true, min: 1 },
     size: String,
   },
@@ -37,13 +37,13 @@ const orderSchema = new mongoose.Schema(
       country: { type: String, required: true },
       postalCode: { type: String, required: true },
     },
-    paymentMethod: {
+      paymentMethod: {
       type: String,
       required: true,
-      enum: ["stripe", "cash-on-delivery"],
+      enum: ["paystack", "cash-on-delivery", "bank-transfer"],
     },
     paymentResult: {
-      id: String,
+      id: String, // Stripe payment intent ID
       status: String,
       updateTime: String,
     },

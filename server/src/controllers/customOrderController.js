@@ -33,7 +33,7 @@ export const createCustomOrder = asyncHandler(async (req, res) => {
   let referenceImageUrls = [];
   if (req.files && req.files.length > 0) {
     const uploadPromises = req.files.map((file) =>
-      uploadBufferToCloudinary(file.buffer, "fashion-ecommerce/custom-orders")
+      uploadBufferToCloudinary(file.buffer, "explicit-world/custom-orders")
     );
     referenceImageUrls = await Promise.all(uploadPromises);
   }
@@ -46,7 +46,7 @@ export const createCustomOrder = asyncHandler(async (req, res) => {
     color,
     specialInstructions,
     styleReferenceImages: referenceImageUrls,
-    price,
+    price: price || 0,
     shippingAddress: shippingAddress ? JSON.parse(shippingAddress) : undefined,
   });
 
@@ -129,7 +129,7 @@ export const getAllOrders = asyncHandler(async (req, res) => {
 // @route   PUT /api/custom-orders/:id/status
 // @access  Private/Admin/Tailor
 export const updateOrderStatus = asyncHandler(async (req, res) => {
-  const { status, note, assignedTailor, estimatedCompletionDate } = req.body;
+  const { status, note, assignedTailor, estimatedCompletionDate, price } = req.body;
 
   const order = await CustomOrder.findById(req.params.id);
   if (!order) {
@@ -148,6 +148,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   if (status) order.status = status;
   if (assignedTailor) order.assignedTailor = assignedTailor;
   if (estimatedCompletionDate) order.estimatedCompletionDate = estimatedCompletionDate;
+  if (price !== undefined) order.price = price;
 
   if (note && status) {
     order.statusHistory.push({ status, note, changedAt: new Date() });

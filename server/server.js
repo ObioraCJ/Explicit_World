@@ -14,7 +14,7 @@ import productRoutes from "./src/routes/productRoutes.js";
 import customOrderRoutes from "./src/routes/customOrderRoutes.js";
 import cartRoutes from "./src/routes/cartRoutes.js";
 import orderRoutes from "./src/routes/orderRoutes.js";
-import { stripeWebhook } from "./src/controllers/orderController.js";
+import { paystackWebhook } from "./src/controllers/orderController.js";
 
 connectDB();
 
@@ -23,9 +23,13 @@ const app = express();
 app.use(helmet());
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
-// Stripe webhook MUST come before express.json() and use raw body parsing,
-// since Stripe's signature verification needs the exact, unparsed request bytes.
-app.post("/api/orders/webhook", express.raw({ type: "application/json" }), stripeWebhook);
+// Paystack webhook MUST come before express.json() and use raw body parsing,
+// since signature verification needs the exact, unparsed request bytes.
+app.post(
+  "/api/orders/paystack-webhook",
+  express.raw({ type: "application/json" }),
+  paystackWebhook
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,9 +45,11 @@ app.set("io", io);
 
 io.on("connection", (socket) => {
   console.log(`Socket connected: ${socket.id}`);
+
   socket.on("join", (userId) => {
     socket.join(userId);
   });
+
   socket.on("disconnect", () => console.log(`Socket disconnected: ${socket.id}`));
 });
 

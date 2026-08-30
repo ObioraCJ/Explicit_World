@@ -78,9 +78,9 @@ const customOrderSchema = new mongoose.Schema(
 
     estimatedCompletionDate: Date,
 
-    price: {
+      price: {
       type: Number,
-      required: [true, "Price is required"],
+      default: 0,
       min: [0, "Price cannot be negative"],
     },
     depositPaid: {

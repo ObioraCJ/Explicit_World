@@ -6,6 +6,12 @@ import RegisterPage from "./pages/Auth/RegisterPage";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/Auth/ResetPasswordPage";
 import ShopPage from "./pages/ShopPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import PaymentCallbackPage from "./pages/PaymentCallbackPage";
+import OrdersPage from "./pages/OrdersPage";
+import CustomOrderPage from "./pages/CustomOrderPage";
 
 function Home() {
   return (
@@ -34,6 +40,12 @@ function App() {
         <Routes>
           <Route path="/" element={<SiteLayout><Home /></SiteLayout>} />
           <Route path="/shop" element={<SiteLayout><ShopPage /></SiteLayout>} />
+          <Route path="/products/:slug" element={<SiteLayout><ProductDetailPage /></SiteLayout>} />
+          <Route path="/cart" element={<SiteLayout><CartPage /></SiteLayout>} />
+          <Route path="/checkout" element={<SiteLayout><CheckoutPage /></SiteLayout>} />
+          <Route path="/payment/callback" element={<SiteLayout><PaymentCallbackPage /></SiteLayout>} />
+          <Route path="/orders" element={<SiteLayout><OrdersPage /></SiteLayout>} />
+          <Route path="/custom-order" element={<SiteLayout><CustomOrderPage /></SiteLayout>} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
