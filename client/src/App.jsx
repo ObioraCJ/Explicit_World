@@ -17,6 +17,7 @@ import AdminLayout from "./pages/Admin/AdminLayout";
 import AdminDashboardPage from "./pages/Admin/AdminDashboardPage";
 import AdminProductsPage from "./pages/Admin/AdminProductsPage";
 import AdminProductFormPage from "./pages/Admin/AdminProductFormPage";
+import AdminOrdersPage from "./pages/Admin/AdminOrdersPage";
 
 function Home() {
   return (
@@ -68,6 +69,7 @@ function App() {
             <Route path="products" element={<AdminProductsPage />} />
             <Route path="products/new" element={<AdminProductFormPage />} />
             <Route path="products/:id/edit" element={<AdminProductFormPage />} />
+            <Route path="orders" element={<AdminOrdersPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
