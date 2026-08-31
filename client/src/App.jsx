@@ -18,6 +18,7 @@ import AdminDashboardPage from "./pages/Admin/AdminDashboardPage";
 import AdminProductsPage from "./pages/Admin/AdminProductsPage";
 import AdminProductFormPage from "./pages/Admin/AdminProductFormPage";
 import AdminOrdersPage from "./pages/Admin/AdminOrdersPage";
+import AdminCustomOrdersPage from "./pages/Admin/AdminCustomOrdersPage";
 
 function Home() {
   return (
@@ -70,6 +71,7 @@ function App() {
             <Route path="products/new" element={<AdminProductFormPage />} />
             <Route path="products/:id/edit" element={<AdminProductFormPage />} />
             <Route path="orders" element={<AdminOrdersPage />} />
+            <Route path="custom-orders" element={<AdminCustomOrdersPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
