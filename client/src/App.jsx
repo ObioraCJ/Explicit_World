@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
@@ -20,22 +23,12 @@ import AdminProductFormPage from "./pages/Admin/AdminProductFormPage";
 import AdminOrdersPage from "./pages/Admin/AdminOrdersPage";
 import AdminCustomOrdersPage from "./pages/Admin/AdminCustomOrdersPage";
 
-function Home() {
-  return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-cream">
-      <div className="text-center">
-        <h1 className="font-display text-4xl text-ink mb-2">Explicit World</h1>
-        <p className="text-charcoal/60">Home page coming soon.</p>
-      </div>
-    </div>
-  );
-}
-
 function SiteLayout({ children }) {
   return (
     <>
       <Navbar />
       {children}
+      <Footer />
     </>
   );
 }
@@ -45,7 +38,8 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<SiteLayout><Home /></SiteLayout>} />
+          <Route path="/" element={<SiteLayout><HomePage /></SiteLayout>} />
+          <Route path="/about" element={<SiteLayout><AboutPage /></SiteLayout>} />
           <Route path="/shop" element={<SiteLayout><ShopPage /></SiteLayout>} />
           <Route path="/products/:slug" element={<SiteLayout><ProductDetailPage /></SiteLayout>} />
           <Route path="/cart" element={<SiteLayout><CartPage /></SiteLayout>} />

@@ -1,24 +1,29 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, User } from "lucide-react";
+import { ShoppingBag, User, Menu, X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
+    setIsMenuOpen(false);
     navigate("/");
   };
+
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <header className="sticky top-0 z-40 bg-cream/95 backdrop-blur border-b border-hairline">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5">
+        <Link to="/" className="flex items-center gap-2.5" onClick={closeMenu}>
           <div className="w-8 h-8 rounded-full border border-gold flex items-center justify-center">
             <span className="font-display text-gold text-xs tracking-wide">EW</span>
           </div>
-          <span className="font-display text-lg text-ink tracking-wide hidden sm:block">
+          <span className="font-display text-lg text-ink tracking-wide">
             Explicit World
           </span>
         </Link>
@@ -30,6 +35,9 @@ function Navbar() {
           <Link to="/custom-order" className="hover:text-ink transition">
             Custom Tailoring
           </Link>
+          <Link to="/about" className="hover:text-ink transition">
+            About
+          </Link>
           {isAuthenticated && (
             <Link to="/orders" className="hover:text-ink transition">
               My Orders
@@ -37,7 +45,7 @@ function Navbar() {
           )}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
           <Link
             to="/cart"
             className="text-charcoal/70 hover:text-ink transition"
@@ -53,7 +61,7 @@ function Navbar() {
                 className="flex items-center gap-1.5 text-sm text-charcoal/70 hover:text-ink transition"
               >
                 <User size={18} />
-                <span className="hidden sm:block">{user.name.split(" ")[0]}</span>
+                <span>{user.name.split(" ")[0]}</span>
               </Link>
               <button
                 onClick={handleLogout}
@@ -71,7 +79,70 @@ function Navbar() {
             </Link>
           )}
         </div>
+
+        <div className="flex items-center gap-4 md:hidden">
+          <Link to="/cart" className="text-charcoal/70" aria-label="Cart" onClick={closeMenu}>
+            <ShoppingBag size={20} />
+          </Link>
+          <button
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="text-charcoal"
+          >
+            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
+
+      {isMenuOpen && (
+        <div className="md:hidden border-t border-hairline bg-cream px-6 py-4 space-y-4">
+          <nav className="flex flex-col gap-3 text-sm font-medium text-charcoal/70">
+            <Link to="/shop" onClick={closeMenu} className="hover:text-ink transition">
+              Shop
+            </Link>
+            <Link to="/custom-order" onClick={closeMenu} className="hover:text-ink transition">
+              Custom Tailoring
+            </Link>
+            <Link to="/about" onClick={closeMenu} className="hover:text-ink transition">
+              About
+            </Link>
+            {isAuthenticated && (
+              <Link to="/orders" onClick={closeMenu} className="hover:text-ink transition">
+                My Orders
+              </Link>
+            )}
+          </nav>
+
+          <div className="pt-3 border-t border-hairline">
+            {isAuthenticated ? (
+              <div className="flex items-center justify-between">
+                <Link
+                  to="/profile"
+                  onClick={closeMenu}
+                  className="flex items-center gap-1.5 text-sm text-charcoal/70"
+                >
+                  <User size={18} />
+                  <span>{user.name.split(" ")[0]}</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-charcoal/50 hover:text-ink transition"
+                >
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                onClick={closeMenu}
+                className="block text-center bg-ink text-cream text-sm font-medium px-4 py-2.5 rounded-md hover:bg-gold-deep transition"
+              >
+                Sign in
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
